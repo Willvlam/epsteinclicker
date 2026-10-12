@@ -287,6 +287,40 @@
           <button id="wagerBtn">FLIP</button>
         </div>
       </div>
+      <div class="row">
+        <div>
+          <b>Blackjack</b><br>
+          Bet clicks or children. Beat the dealer without going over 21.
+          <div id="blackjackStatus">Choose your bet and deal.</div>
+        </div>
+        <div>
+          <input id="blackjackInput" type="number" min="1" step="1" value="1" aria-label="Blackjack bet">
+          <select id="blackjackMode" aria-label="Blackjack currency">
+            <option value="clicks">Clicks</option>
+            <option value="children">Children</option>
+          </select>
+          <button id="blackjackBtn">DEAL</button>
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <b>Roulette</b><br>
+          Bet on red or black with clicks or children.
+          <div id="rouletteStatus">Pick a color and amount.</div>
+        </div>
+        <div>
+          <input id="rouletteInput" type="number" min="1" step="1" value="1" aria-label="Roulette bet">
+          <select id="rouletteMode" aria-label="Roulette currency">
+            <option value="clicks">Clicks</option>
+            <option value="children">Children</option>
+          </select>
+          <select id="rouletteColor" aria-label="Roulette color">
+            <option value="red">Red</option>
+            <option value="black">Black</option>
+          </select>
+          <button id="rouletteBtn">SPIN</button>
+        </div>
+      </div>
     </div>
     <div class="panel">
       <h2>UPGRADES</h2>
