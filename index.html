@@ -486,7 +486,7 @@
     const arcadePanelEl = document.getElementById("arcade");
     const shopEl = document.getElementById("shop");
     const globalShopEl = document.getElementById("globalShop");
-    const drawerPanels = [arcadePanelEl, shopEl.closest(".panel"), globalShopEl.closest(".panel")].filter(Boolean);
+    const drawerPanels = [arcadePanelEl, globalShopEl.closest(".panel")].filter(Boolean);
     drawerPanels.forEach(panel => drawerContentEl.appendChild(panel));
     const worldEarningsEl = document.getElementById("worldEarnings");
     const sprintStatusEl = document.getElementById("sprintStatus");
