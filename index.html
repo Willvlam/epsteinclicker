@@ -126,6 +126,16 @@
       cursor:not-allowed;
       box-shadow:none;
     }
+    input{
+      box-sizing:border-box;
+      width:140px;
+      background:#000;
+      color:var(--green);
+      border:2px solid var(--green);
+      padding:8px;
+      font-family:inherit;
+      font-size:10px;
+    }
     .danger{
       border-color:var(--danger);
       color:var(--danger);
@@ -184,6 +194,7 @@
       <span id="worldProgress">THE UNTOUCHABLE: 0 / 10</span>
       <br><br>
       <button id="worldBtn" disabled>TRUMP WORLD LOCKED</button>
+      <div id="worldEarnings" class="footer">All unlocked worlds earn while you are away.</div>
     </div>
     <div class="sub">
       CHILDREN: <span id="children">0</span><br>
@@ -201,8 +212,30 @@
     </div>
     <div class="panel">
       <h2>UNIVERSAL THEORY TREE</h2>
-      <div class="sub">Spend children to strengthen every world. Hawking-world upgrades earn children.</div>
+      <div class="sub">Spend children to strengthen every world. Each upgrade type you own has a 0.5% chance to find a child per click.</div>
       <div id="globalShop"></div>
+    </div>
+    <div class="panel">
+      <h2>ARCADE</h2>
+      <div class="row">
+        <div>
+          <b>Research Sprint</b><br>
+          Double income in every unlocked world for 20 seconds. Cooldown: 90 seconds.
+          <div id="sprintStatus"></div>
+        </div>
+        <button id="sprintBtn">START</button>
+      </div>
+      <div class="row">
+        <div>
+          <b>Cosmic Wager</b><br>
+          45% chance to win. Winning returns your bet multiplied by a factor that falls from 2.0x to 1.1x as your bet grows.
+          <div id="wagerStatus">Choose a whole-click bet.</div>
+        </div>
+        <div>
+          <input id="wagerInput" type="number" min="1" step="1" value="1" aria-label="Wager in clicks">
+          <button id="wagerBtn">FLIP</button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -318,6 +351,12 @@
     let hawkingUnlocked = false;
     let children = 0n;
     let savedWorlds = {};
+    let sprintExpiresAt = 0;
+    let sprintCooldownUntil = 0;
+    let productionCarry = { epstein: 0n, trump: 0n, hawking: 0n };
+    let wagerMessage = "Choose a whole-click bet.";
+    const SPRINT_DURATION_MS = 20_000;
+    const SPRINT_COOLDOWN_MS = 90_000;
 
     // DOM
     const scoreEl = document.getElementById("score");
@@ -331,6 +370,12 @@
     const childrenEl = document.getElementById("children");
     const shopEl = document.getElementById("shop");
     const globalShopEl = document.getElementById("globalShop");
+    const worldEarningsEl = document.getElementById("worldEarnings");
+    const sprintStatusEl = document.getElementById("sprintStatus");
+    const sprintBtn = document.getElementById("sprintBtn");
+    const wagerInput = document.getElementById("wagerInput");
+    const wagerStatusEl = document.getElementById("wagerStatus");
+    const wagerBtn = document.getElementById("wagerBtn");
     const btn = document.getElementById("clickBtn");
     const epsteinImage = btn.getAttribute("src");
     const resetBtn = document.getElementById("resetBtn");
@@ -392,6 +437,8 @@
         worldUnlocked,
         hawkingUnlocked,
         children: children.toString(),
+        sprintExpiresAt,
+        sprintCooldownUntil,
         universalUpgrades: universalUpgrades.filter(u => u.owned).map(u => u.id),
         worlds: savedWorlds
       }));
@@ -417,6 +464,8 @@
         worldUnlocked = data.worldUnlocked === true || finalOwned >= 10n;
         hawkingUnlocked = data.hawkingUnlocked === true || bigLeagueOwned >= 10n;
         children = BigInt(data.children || "0");
+        sprintExpiresAt = Number.isFinite(data.sprintExpiresAt) ? data.sprintExpiresAt : 0;
+        sprintCooldownUntil = Number.isFinite(data.sprintCooldownUntil) ? data.sprintCooldownUntil : 0;
         const ownedUniversal = new Set(Array.isArray(data.universalUpgrades) ? data.universalUpgrades : []);
         universalUpgrades.forEach(u => { u.owned = ownedUniversal.has(u.id); });
         const startWorld = data.currentWorld === "hawking" && hawkingUnlocked
@@ -514,18 +563,58 @@
       return universalUpgrades.reduce((multiplier, u) => u.owned ? multiplier * (u.multiplier || 1n) : multiplier, 1n);
     }
 
+    function globalBonus() {
+      return universalUpgrades.reduce((bonus, u) => bonus + (u.owned ? (u.add || 0n) : 0n), 0n);
+    }
+
+    function worldClickPower(id) {
+      const basePerClick = id === worldId ? perClick : BigInt(savedWorlds[id]?.perClick || "1");
+      const boost = Date.now() < sprintExpiresAt ? 2n : 1n;
+      return (basePerClick * globalMultiplier() + globalBonus()) * boost;
+    }
+
     function effectivePerClick() {
-      const globalBonus = universalUpgrades.reduce((bonus, u) => bonus + (u.owned ? (u.add || 0n) : 0n), 0n);
-      return perClick * globalMultiplier() + globalBonus;
+      return worldClickPower(worldId);
+    }
+
+    function unlockedWorldIds() {
+      const ids = ["epstein"];
+      if (worldUnlocked) ids.push("trump");
+      if (hawkingUnlocked) ids.push("hawking");
+      return ids;
+    }
+
+    function parseWager10() {
+      const value = wagerInput.value.trim();
+      if (!/^\d+$/.test(value)) return null;
+      const wager = BigInt(value) * 10n;
+      return wager > 0n && wager <= score10 ? wager : null;
+    }
+
+    function refreshArcadeUI() {
+      const now = Date.now();
+      if (now < sprintExpiresAt) {
+        sprintBtn.disabled = true;
+        sprintBtn.textContent = "ACTIVE";
+        sprintStatusEl.textContent = `Boost active for ${Math.ceil((sprintExpiresAt - now) / 1000)}s`;
+      } else if (now < sprintCooldownUntil) {
+        sprintBtn.disabled = true;
+        sprintBtn.textContent = "RESTING";
+        sprintStatusEl.textContent = `Ready in ${Math.ceil((sprintCooldownUntil - now) / 1000)}s`;
+      } else {
+        sprintBtn.disabled = false;
+        sprintBtn.textContent = "START";
+        sprintStatusEl.textContent = "Ready to launch.";
+      }
+      wagerStatusEl.textContent = wagerMessage;
+      wagerBtn.disabled = parseWager10() === null;
     }
 
     // Top UI
     function updateTopUI() {
       const worldNames = { epstein: "EPSTEIN", trump: "TRUMP", hawking: "STEPHEN HAWKING" };
       const worldTitles = { epstein: "EPSTEIN CLICKER", trump: "TRUMP CLICKER", hawking: "HAWKING CLICKER" };
-      const worldList = ["epstein"];
-      if (worldUnlocked) worldList.push("trump");
-      if (hawkingUnlocked) worldList.push("hawking");
+      const worldList = unlockedWorldIds();
       const currentIndex = worldList.indexOf(worldId);
       const nextWorld = worldList[(currentIndex + 1) % worldList.length];
       document.body.classList.toggle("trumpWorld", worldId === "trump");
@@ -554,6 +643,11 @@
       perSecEl.textContent = fmtPerSec10(perSec10);
 
       upgradeCountEl.textContent = commaBigInt(upgradesOwned);
+      const otherWorlds = worldList.filter(id => id !== worldId);
+      worldEarningsEl.textContent = otherWorlds.length
+        ? `ALSO EARNING: ${otherWorlds.map(id => `${worldNames[id]} ${fmtPerSec10(worldClickPower(id))}/SEC`).join(" | ")}`
+        : "Unlock more worlds to earn clicks in them while you play here.";
+      refreshArcadeUI();
     }
 
     function fullUpdate() {
@@ -601,14 +695,37 @@
     }
 
     worldBtn.addEventListener("click", () => {
-      const worldList = ["epstein"];
-      if (worldUnlocked) worldList.push("trump");
-      if (hawkingUnlocked) worldList.push("hawking");
+      const worldList = unlockedWorldIds();
       if (worldList.length < 2) return;
       save();
       const nextWorld = worldList[(worldList.indexOf(worldId) + 1) % worldList.length];
       restoreWorld(nextWorld, savedWorlds[nextWorld]);
       rendered = false;
+      fullUpdate();
+    });
+
+    sprintBtn.addEventListener("click", () => {
+      const now = Date.now();
+      if (now < sprintCooldownUntil) return;
+      sprintExpiresAt = now + SPRINT_DURATION_MS;
+      sprintCooldownUntil = now + SPRINT_COOLDOWN_MS;
+      fullUpdate();
+    });
+
+    wagerInput.addEventListener("input", refreshArcadeUI);
+    wagerBtn.addEventListener("click", () => {
+      const wager10 = parseWager10();
+      if (wager10 === null) return;
+      const multiplierBps = 20000n - wager10 * 9000n / score10;
+      score10 -= wager10;
+      if (Math.random() < 0.45) {
+        const returned10 = wager10 * multiplierBps / 10000n;
+        score10 += returned10;
+        const multiplier = `${multiplierBps / 10000n}.${((multiplierBps % 10000n) / 100n).toString().padStart(2, "0")}x`;
+        wagerMessage = `WIN! Your bet paid ${multiplier} (${fmtScore10(returned10)} clicks returned).`;
+      } else {
+        wagerMessage = `No luck - ${fmtScore10(wager10)} clicks lost.`;
+      }
       fullUpdate();
     });
 
@@ -634,16 +751,27 @@
       fullUpdate();
     });
 
-    // Auto: exact rule auto/sec = perClick/10
+    // Every unlocked world earns passively, even while it is not selected.
     const TICKS_PER_SEC = 20n;
-    let autoCarry = 0n;
-
     setInterval(() => {
-      autoCarry += effectivePerClick(); // perSec10
-      const addNow = autoCarry / TICKS_PER_SEC; // tenths to add now
-      autoCarry = autoCarry % TICKS_PER_SEC;
-
-      if (addNow > 0n) score10 += addNow;
+      unlockedWorldIds().forEach(id => {
+        productionCarry[id] += worldClickPower(id);
+        const addNow = productionCarry[id] / TICKS_PER_SEC;
+        productionCarry[id] %= TICKS_PER_SEC;
+        if (id === worldId) {
+          score10 += addNow;
+        } else if (addNow > 0n) {
+          const state = savedWorlds[id] || {
+            score10: "0",
+            perClick: "1",
+            upgradesOwned: "0",
+            upgradeCosts: {},
+            upgradeOwned: {}
+          };
+          state.score10 = (BigInt(state.score10 || "0") + addNow).toString();
+          savedWorlds[id] = state;
+        }
+      });
       updateTopUI();
     }, 50);
 
