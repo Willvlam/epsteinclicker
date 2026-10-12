@@ -274,7 +274,37 @@
     ];
 
     const universalUpgrades = [
-      { id:"insight", name:"Cosmic Insight", description:"Double click and auto earnings in every world.", cost: 5n, multiplier: 2n, owned: false, requires: null },
+      { id:"spark", name:"First Spark", description:"+1 per click in every world.", cost: 1n, add: 1n, owned: false, requires: null },
+      { id:"notebook", name:"Pocket Notebook", description:"+2 per click in every world.", cost: 2n, add: 2n, owned: false, requires: "spark" },
+      { id:"questions", name:"Curious Questions", description:"+3 per click in every world.", cost: 3n, add: 3n, owned: false, requires: "notebook" },
+      { id:"observation", name:"Careful Observation", description:"+5 per click in every world.", cost: 5n, add: 5n, owned: false, requires: "questions" },
+      { id:"brightidea", name:"Bright Idea", description:"+8 per click in every world.", cost: 8n, add: 8n, owned: false, requires: "observation" },
+      { id:"method", name:"Scientific Method", description:"+13 per click in every world.", cost: 13n, add: 13n, owned: false, requires: "brightidea" },
+      { id:"researchnotes", name:"Research Notes", description:"+21 per click in every world.", cost: 21n, add: 21n, owned: false, requires: "method" },
+      { id:"peerreview", name:"Peer Review", description:"+34 per click in every world.", cost: 34n, add: 34n, owned: false, requires: "researchnotes" },
+      { id:"discovery", name:"Shared Discovery", description:"+55 per click in every world.", cost: 55n, add: 55n, owned: false, requires: "peerreview" },
+      { id:"library", name:"Open Library", description:"+89 per click in every world.", cost: 89n, add: 89n, owned: false, requires: "discovery" },
+      { id:"communitylab", name:"Community Laboratory", description:"+144 per click in every world.", cost: 144n, add: 144n, owned: false, requires: "library" },
+      { id:"mentornetwork", name:"Mentor Network", description:"+233 per click in every world.", cost: 233n, add: 233n, owned: false, requires: "communitylab" },
+      { id:"scholarships", name:"Scholarship Fund", description:"+377 per click in every world.", cost: 377n, add: 377n, owned: false, requires: "mentornetwork" },
+      { id:"learningnetwork", name:"Global Learning Network", description:"+610 per click in every world.", cost: 610n, add: 610n, owned: false, requires: "scholarships" },
+      { id:"institute", name:"Research Institute", description:"+987 per click in every world.", cost: 987n, add: 987n, owned: false, requires: "learningnetwork" },
+      { id:"exchange", name:"Knowledge Exchange", description:"+1,597 per click in every world.", cost: 1597n, add: 1597n, owned: false, requires: "institute" },
+      { id:"innovation", name:"Innovation Grant", description:"+2,584 per click in every world.", cost: 2584n, add: 2584n, owned: false, requires: "exchange" },
+      { id:"alliance", name:"Academic Alliance", description:"+4,181 per click in every world.", cost: 4181n, add: 4181n, owned: false, requires: "innovation" },
+      { id:"discoveryengine", name:"Discovery Engine", description:"+6,765 per click in every world.", cost: 6765n, add: 6765n, owned: false, requires: "alliance" },
+      { id:"spaceacademy", name:"Interstellar Academy", description:"+10,946 per click in every world.", cost: 10946n, add: 10946n, owned: false, requires: "discoveryengine" },
+      { id:"cosmiclibrary", name:"Cosmic Library", description:"+17,711 per click in every world.", cost: 17711n, add: 17711n, owned: false, requires: "spaceacademy" },
+      { id:"universalclassroom", name:"Universal Classroom", description:"+28,657 per click in every world.", cost: 28657n, add: 28657n, owned: false, requires: "cosmiclibrary" },
+      { id:"deepspace", name:"Deep Space Research", description:"+46,368 per click in every world.", cost: 46368n, add: 46368n, owned: false, requires: "universalclassroom" },
+      { id:"quantumscholarship", name:"Quantum Scholarship", description:"+75,025 per click in every world.", cost: 75025n, add: 75025n, owned: false, requires: "deepspace" },
+      { id:"stellarthinktank", name:"Stellar Think Tank", description:"+121,393 per click in every world.", cost: 121393n, add: 121393n, owned: false, requires: "quantumscholarship" },
+      { id:"galacticfellowship", name:"Galactic Fellowship", description:"+196,418 per click in every world.", cost: 196418n, add: 196418n, owned: false, requires: "stellarthinktank" },
+      { id:"cosmiccivilization", name:"Cosmic Civilization", description:"+317,811 per click in every world.", cost: 317811n, add: 317811n, owned: false, requires: "galacticfellowship" },
+      { id:"grandunification", name:"Grand Unification", description:"+514,229 per click in every world.", cost: 514229n, add: 514229n, owned: false, requires: "cosmiccivilization" },
+      { id:"theoryofeverything", name:"Theory of Everything", description:"+832,040 per click in every world.", cost: 832040n, add: 832040n, owned: false, requires: "grandunification" },
+      { id:"knowledgelegacy", name:"Legacy of Knowledge", description:"+1,346,269 per click in every world.", cost: 1346269n, add: 1346269n, owned: false, requires: "theoryofeverything" },
+      { id:"insight", name:"Cosmic Insight", description:"Double click and auto earnings in every world.", cost: 5n, multiplier: 2n, owned: false, requires: "spark" },
       { id:"mentorship", name:"Next Generation", description:"Double click and auto earnings in every world.", cost: 15n, multiplier: 2n, owned: false, requires: "insight" },
       { id:"unified", name:"Unified Theory", description:"Triple click and auto earnings in every world.", cost: 40n, multiplier: 3n, owned: false, requires: "mentorship" }
     ];
@@ -469,22 +499,24 @@
     function refreshGlobalShop() {
       universalUpgrades.forEach(u => {
         const prerequisite = universalUpgrades.find(item => item.id === u.requires);
+        const isLocked = prerequisite && !prerequisite.owned;
         u.row.firstElementChild.innerHTML =
           `<b>${u.name}</b><br>${u.description}<br>` +
           `Cost: ${commaBigInt(u.cost)} children` +
-          (u.requires && !prerequisite.owned ? `<br>Requires: ${prerequisite.name}` : "");
+          (isLocked ? `<br>Requires: ${prerequisite.name}` : "");
         u.button.textContent = u.owned ? "OWNED" : "BUY";
-        u.button.disabled = u.owned || (u.requires && !prerequisite.owned) || children < u.cost;
+        u.button.disabled = u.owned || isLocked || children < u.cost;
       });
       childrenEl.textContent = commaBigInt(children);
     }
 
     function globalMultiplier() {
-      return universalUpgrades.reduce((multiplier, u) => u.owned ? multiplier * u.multiplier : multiplier, 1n);
+      return universalUpgrades.reduce((multiplier, u) => u.owned ? multiplier * (u.multiplier || 1n) : multiplier, 1n);
     }
 
     function effectivePerClick() {
-      return perClick * globalMultiplier();
+      const globalBonus = universalUpgrades.reduce((bonus, u) => bonus + (u.owned ? (u.add || 0n) : 0n), 0n);
+      return perClick * globalMultiplier() + globalBonus;
     }
 
     // Top UI
