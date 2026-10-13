@@ -190,6 +190,259 @@
       font-family:inherit;
       font-size:10px;
     }
+    select{
+      max-width:100%;
+      background:#000;
+      color:var(--green);
+      border:2px solid var(--green);
+      padding:8px;
+      font-family:inherit;
+      font-size:9px;
+    }
+    .casinoGame{
+      margin-top:18px;
+      padding:14px;
+      border:1px solid rgba(0,255,90,.48);
+      border-radius:12px;
+      background:linear-gradient(145deg,rgba(0,32,13,.96),rgba(0,10,5,.96));
+      box-shadow:0 8px 24px rgba(0,0,0,.45),inset 0 0 18px rgba(0,255,90,.06);
+      color:#f3fff6;
+      font-family:Arial,Helvetica,sans-serif;
+      text-align:left;
+    }
+    .casinoHeading{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:12px;
+    }
+    .casinoHeading h3{
+      margin:0;
+      color:#fff;
+      font-family:inherit;
+      font-size:20px;
+    }
+    .casinoHeading p,.rouletteReadout p{
+      margin:6px 0 0;
+      color:#b3c8b9;
+      font-size:13px;
+      line-height:1.45;
+    }
+    .gameBadge{
+      flex:none;
+      padding:6px 8px;
+      border:1px solid rgba(0,255,90,.45);
+      border-radius:20px;
+      color:#9affb9;
+      font-size:10px;
+      font-weight:bold;
+      letter-spacing:.06em;
+    }
+    .betBar{
+      display:flex;
+      flex-wrap:wrap;
+      align-items:flex-end;
+      gap:10px;
+      margin:14px 0;
+    }
+    .betBar label{
+      display:grid;
+      gap:5px;
+      color:#b3c8b9;
+      font-size:10px;
+      font-weight:bold;
+      letter-spacing:.08em;
+    }
+    .casinoGame input,.casinoGame select{
+      width:auto;
+      min-width:105px;
+      border-color:#447b58;
+      border-radius:6px;
+      background:#07140b;
+      color:#fff;
+      font:14px Arial,Helvetica,sans-serif;
+      padding:9px 10px;
+    }
+    .casinoGame button{
+      min-width:78px;
+      border-color:#38c76a;
+      border-radius:6px;
+      background:#14582b;
+      color:#fff;
+      font:700 11px Arial,Helvetica,sans-serif;
+      letter-spacing:.04em;
+      padding:10px 12px;
+      box-shadow:0 3px 10px rgba(0,0,0,.3);
+    }
+    .casinoGame button:hover:not(:disabled){ background:#1b783c; }
+    .casinoGame button:disabled{ opacity:.42; }
+    .balance{
+      margin-left:auto;
+      padding:9px 0 10px;
+      color:#b3c8b9;
+      font-size:12px;
+      white-space:nowrap;
+    }
+    .gameTable{
+      overflow:hidden;
+      margin:12px 0 8px;
+      padding:16px;
+      border:5px solid #ad8c4b;
+      border-radius:22px 22px 48px 48px;
+      background:
+        radial-gradient(ellipse at 50% 45%,rgba(25,120,61,.72),transparent 68%),
+        repeating-linear-gradient(135deg,rgba(255,255,255,.018) 0 2px,transparent 2px 5px),
+        #075029;
+      box-shadow:inset 0 0 0 2px rgba(255,235,168,.32),inset 0 0 34px rgba(0,0,0,.6),0 5px 12px #000;
+      text-align:left;
+    }
+    .handZone + .handZone{ margin-top:14px; }
+    .handTitle{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:9px;
+      color:#e8f4e8;
+      font-size:11px;
+      font-weight:bold;
+      letter-spacing:.06em;
+    }
+    .cardRow{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      min-height:84px;
+    }
+    .playingCard{
+      display:grid;
+      place-items:center;
+      width:54px;
+      height:78px;
+      box-sizing:border-box;
+      border:1px solid #fff;
+      border-radius:7px;
+      background:linear-gradient(145deg,#fff,#e8e7df);
+      color:#151515;
+      font-family:Georgia,serif;
+      font-size:23px;
+      font-weight:bold;
+      box-shadow:0 3px 8px rgba(0,0,0,.45);
+    }
+    .playingCard.redCard{ color:#c32932; }
+    .playingCard.hiddenCard{
+      color:var(--green);
+      border:3px solid #efce79;
+      background:repeating-linear-gradient(45deg,#164d9a,#164d9a 6px,#092c61 6px,#092c61 12px);
+    }
+    .playerHand{ margin-top:10px; padding:8px; border:1px solid transparent; border-radius:8px; }
+    .playerHand.activeHand{ border-color:#f4d477; background:rgba(0,0,0,.18); }
+    .gameActions{
+      display:flex;
+      flex-wrap:wrap;
+      align-items:center;
+      gap:8px;
+      margin-top:14px;
+    }
+    .gameActions button{ min-width:82px; }
+    .gameStatus{
+      min-height:20px;
+      margin-top:9px;
+      color:#d7eddd;
+      font-size:13px;
+      line-height:1.5;
+    }
+    .rouletteTable{
+      padding:12px;
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:10px;
+      background:rgba(0,0,0,.22);
+    }
+    .rouletteLayout{
+      display:grid;
+      grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);
+      align-items:center;
+      gap:12px;
+      margin:4px 0;
+    }
+    .rouletteWheel{
+      position:relative;
+      width:min(100%,260px);
+      aspect-ratio:1;
+      margin:auto;
+      border:8px solid #b99751;
+      border-radius:50%;
+      box-shadow:0 0 0 3px #4c351d,0 0 20px rgba(0,0,0,.8),inset 0 0 0 4px #d5b76f;
+      transition:transform 3.6s cubic-bezier(.12,.72,.12,1);
+      background:#111;
+    }
+    .rouletteHub{
+      position:absolute;
+      inset:36%;
+      display:grid;
+      place-items:center;
+      border:3px solid #d1b46e;
+      border-radius:50%;
+      background:#18241a;
+      color:#f0dfad;
+      font-size:10px;
+      text-align:center;
+      z-index:2;
+      pointer-events:none;
+    }
+    .roulettePocket{
+      position:absolute;
+      left:50%;
+      top:50%;
+      width:18px;
+      height:20px;
+      min-width:0;
+      padding:0;
+      border:0;
+      border-radius:2px;
+      box-shadow:0 1px 2px rgba(0,0,0,.75);
+      color:#fff;
+      font:bold 8px Arial,Helvetica,sans-serif;
+      transform-origin:center center;
+      z-index:1;
+    }
+    .roulettePocket.redPocket{ background:#b32d36; }
+    .roulettePocket.blackPocket{ background:#151817; }
+    .roulettePocket.greenPocket{ background:#14834b; }
+    .roulettePocket:hover:not(:disabled),.roulettePocket[aria-pressed="true"]{
+      z-index:3;
+      outline:2px solid #ffe89b;
+      outline-offset:1px;
+    }
+    .roulettePointer{
+      position:absolute;
+      top:-2px;
+      left:calc(50% - 7px);
+      z-index:4;
+      color:#ffe89b;
+      font-size:16px;
+      text-shadow:0 1px 3px #000;
+      pointer-events:none;
+    }
+    .rouletteResult{
+      margin:6px 0;
+      color:#fff;
+      font-size:18px;
+      font-weight:bold;
+      text-align:left;
+    }
+    .rouletteReadout{
+      padding:8px;
+    }
+    @media(max-width:520px){
+      .casinoGame{ padding:11px; }
+      .casinoHeading{ flex-direction:column; }
+      .rouletteLayout{ grid-template-columns:1fr; }
+      .rouletteWheel{ width:min(78vw,260px); }
+      .balance{ width:100%; margin-left:0; padding:0; }
+      .row{ align-items:flex-start; flex-direction:column; }
+      .row > div:last-child{ display:flex; flex-wrap:wrap; align-items:center; gap:6px; }
+      .casinoGame input,.casinoGame select{ min-width:95px; }
+    }
     .danger{
       border-color:var(--danger);
       color:var(--danger);
@@ -211,6 +464,11 @@
       --green:#72d8ff;
       --danger:#ff6685;
       background:#050b1a;
+    }
+    body.billClintonWorld{
+      --green:#d1f0ff;
+      --danger:#ff7a66;
+      background:#0a0f26;
     }
     .floatText{
       position:fixed;
@@ -254,7 +512,7 @@
       CHILDREN: <span id="children">0</span><br>
       Each owned upgrade type rolls separately for children: <span id="childChance">0.50%</span> chance per click.
     </div>
-    <button id="drawerToggle" type="button" class="drawerToggle">UPGRADES</button>
+    <button id="drawerToggle" type="button" class="drawerToggle">ARCADE</button>
     <aside id="sideDrawer" class="sideDrawer" aria-label="Upgrades and minigames drawer">
       <div class="drawerHeader">
         <span>ARCADE + UPGRADES</span>
@@ -287,40 +545,84 @@
           <button id="wagerBtn">FLIP</button>
         </div>
       </div>
-      <div class="row">
-        <div>
-          <b>Blackjack</b><br>
-          Bet clicks or children. Beat the dealer without going over 21.
-          <div id="blackjackStatus">Choose your bet and deal.</div>
+      <section class="casinoGame blackjackGame" aria-labelledby="blackjackTitle">
+        <div class="casinoHeading">
+          <div>
+            <h3 id="blackjackTitle">Blackjack</h3>
+            <p>Get closer to 21 than the dealer without going over. Dealer stands on 17.</p>
+          </div>
+          <span class="gameBadge">BLACKJACK PAYS 3:2</span>
         </div>
-        <div>
-          <input id="blackjackInput" type="number" min="1" step="1" value="1" aria-label="Blackjack bet">
-          <select id="blackjackMode" aria-label="Blackjack currency">
+        <div class="betBar">
+          <label>BET <input id="blackjackInput" type="number" min="1" step="1" value="1"></label>
+          <label>WAGER WITH
+            <select id="blackjackMode">
+              <option value="clicks">Clicks</option>
+              <option value="children">Children</option>
+            </select>
+          </label>
+          <button id="blackjackBtn" type="button">DEAL</button>
+          <span class="balance" id="blackjackBalance"></span>
+        </div>
+        <div class="gameTable blackjackTable" aria-label="Blackjack table">
+        <div class="handZone">
+          <div class="handTitle"><span>DEALER</span><span id="dealerScore">WAITING</span></div>
+          <div id="dealerCards" class="cardRow"></div>
+        </div>
+        <div id="playerHands"></div>
+        <div class="gameActions">
+          <button id="blackjackHit" type="button" disabled>HIT</button>
+          <button id="blackjackStand" type="button" disabled>STAND</button>
+          <button id="blackjackDouble" type="button" disabled>DOUBLE</button>
+          <button id="blackjackSplit" type="button" disabled>SPLIT</button>
+        </div>
+        </div>
+        <div id="blackjackStatus" class="gameStatus" role="status" aria-live="polite">Set your bet, then deal.</div>
+      </section>
+      <section class="casinoGame rouletteGame" aria-labelledby="rouletteTitle">
+        <div class="casinoHeading">
+          <div>
+            <h3 id="rouletteTitle">European Roulette</h3>
+            <p>Choose a number or an outside bet, then spin the wheel.</p>
+          </div>
+          <span class="gameBadge">SINGLE ZERO · 0–36</span>
+        </div>
+        <div class="betBar rouletteBetBar">
+          <label>BET <input id="rouletteInput" type="number" min="1" step="1" value="1"></label>
+          <label>WAGER WITH
+            <select id="rouletteMode">
             <option value="clicks">Clicks</option>
             <option value="children">Children</option>
-          </select>
-          <button id="blackjackBtn">DEAL</button>
+            </select>
+          </label>
+          <label>BET TYPE
+            <select id="rouletteBetType">
+            <option value="number">Number</option>
+            <option value="color">Color</option>
+            <option value="parity">Even or odd</option>
+            <option value="range">Low or high</option>
+            </select>
+          </label>
+          <label>YOUR PICK
+            <select id="rouletteTarget" aria-label="Roulette bet selection"></select>
+          </label>
+          <button id="rouletteBtn" type="button">SPIN</button>
+          <span class="balance" id="rouletteBalance"></span>
         </div>
-      </div>
-      <div class="row">
-        <div>
-          <b>Roulette</b><br>
-          Bet on red or black with clicks or children.
-          <div id="rouletteStatus">Pick a color and amount.</div>
+        <div class="rouletteTable">
+          <div class="rouletteLayout">
+            <div class="rouletteWheel" id="rouletteWheel" aria-label="European roulette wheel">
+              <div class="roulettePointer" aria-hidden="true">▼</div>
+              <div class="rouletteHub" id="rouletteHub">SPIN</div>
+            </div>
+            <div class="rouletteReadout">
+              <div class="rouletteResult" id="rouletteResult">Result: not spun</div>
+              <div id="rouletteStatus" class="gameStatus" role="status" aria-live="polite">Place a bet to play.</div>
+              <p>Tap a wheel pocket to select that number. A straight-up number returns 36× your bet (35:1 profit); outside bets return 2×.</p>
+            </div>
+          </div>
         </div>
-        <div>
-          <input id="rouletteInput" type="number" min="1" step="1" value="1" aria-label="Roulette bet">
-          <select id="rouletteMode" aria-label="Roulette currency">
-            <option value="clicks">Clicks</option>
-            <option value="children">Children</option>
-          </select>
-          <select id="rouletteColor" aria-label="Roulette color">
-            <option value="red">Red</option>
-            <option value="black">Black</option>
-          </select>
-          <button id="rouletteBtn">SPIN</button>
-        </div>
-      </div>
+      </section>
     </div>
     <div class="panel">
       <h2>UPGRADES</h2>
@@ -413,6 +715,29 @@
       { id:"cosmos",     name:"The Observable Cosmos",    cost: 10000000000000000000n,add: 100000000000000000n,owned: 0n, scaleNum: 140n, scaleDen: 100n }
     ];
 
+    const billClintonUpgrades = [
+      { id:"arkansas", name:"Arkansas Network", cost: 1000n, add: 10n, owned: 0n, scaleNum: 125n, scaleDen: 100n },
+      { id:"education", name:"Education Reform", cost: 10000n, add: 20n, owned: 0n, scaleNum: 140n, scaleDen: 100n },
+      { id:"fundraiser", name:"Fundraiser Circuit", cost: 20000n, add: 40n, owned: 0n, scaleNum: 140n, scaleDen: 100n },
+      { id:"policy", name:"Policy Briefing", cost: 50000n, add: 100n, owned: 0n, scaleNum: 140n, scaleDen: 100n },
+      { id:"oval", name:"Oval Office Agenda", cost: 100000n, add: 1000n, owned: 0n, scaleNum: 140n, scaleDen: 100n },
+      { id:"initiative", name:"Global Initiative", cost: 1000000n, add: 10000n, owned: 0n, scaleNum: 140n, scaleDen: 100n },
+      { id:"library", name:"Presidential Library", cost: 5000000n, add: 100000n, owned: 0n, scaleNum: 140n, scaleDen: 100n },
+      { id:"diplomacy", name:"Diplomatic Outreach", cost: 10000000n, add: 500000n, owned: 0n, scaleNum: 140n, scaleDen: 100n },
+      { id:"sax", name:"Saxophone Lounge", cost: 100000000n, add: 5000000n, owned: 0n, scaleNum: 140n, scaleDen: 100n },
+      { id:"foundation", name:"Clinton Foundation", cost: 1000000000n, add: 25000000n, owned: 0n, scaleNum: 140n, scaleDen: 100n },
+      { id:"summit", name:"Domestic Summit", cost: 10000000000n, add: 150000000n, owned: 0n, scaleNum: 140n, scaleDen: 100n },
+      { id:"television", name:"Television Network", cost: 100000000000n, add: 1000000000n, owned: 0n, scaleNum: 140n, scaleDen: 100n },
+      { id:"legacy", name:"Legacy Advocacy", cost: 1000000000000n, add: 7500000000n, owned: 0n, scaleNum: 140n, scaleDen: 100n },
+      { id:"coalition", name:"Coalition Machine", cost: 10000000000000n, add: 50000000000n, owned: 0n, scaleNum: 140n, scaleDen: 100n },
+      { id:"dialogue", name:"Global Dialogue", cost: 100000000000000n, add: 350000000000n, owned: 0n, scaleNum: 140n, scaleDen: 100n },
+      { id:"alliance", name:"North American Alliance", cost: 1000000000000000n, add: 2500000000000n, owned: 0n, scaleNum: 140n, scaleDen: 100n },
+      { id:"partnership", name:"Public-Private Partnership", cost: 10000000000000000n, add: 18000000000000n, owned: 0n, scaleNum: 140n, scaleDen: 100n },
+      { id:"charter", name:"Charitable Charter", cost: 100000000000000000n, add: 150000000000000n, owned: 0n, scaleNum: 140n, scaleDen: 100n },
+      { id:"reform", name:"Twenty-First Century Reform", cost: 1000000000000000000n, add: 1200000000000000n, owned: 0n, scaleNum: 140n, scaleDen: 100n },
+      { id:"commander", name:"The Commander in Chief", cost: 10000000000000000000n, add: 10000000000000000n, owned: 0n, scaleNum: 140n, scaleDen: 100n }
+    ];
+
     const universalUpgrades = [
       { id:"spark", name:"First Spark", description:"+1 per click in every world.", cost: 1n, add: 1n, owned: false, requires: null },
       { id:"notebook", name:"Pocket Notebook", description:"+2 per click in every world.", cost: 2n, add: 2n, owned: false, requires: "spark" },
@@ -451,18 +776,25 @@
 
     const trumpImage = "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/56/Donald_Trump_official_portrait.jpg/960px-Donald_Trump_official_portrait.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail";
     const hawkingImage = "https://upload.wikimedia.org/wikipedia/commons/e/eb/Stephen_Hawking.StarChild.jpg";
+    const billClintonImage = "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Bill_Clinton.jpg/960px-Bill_Clinton.jpg";
 
     let upgrades = epsteinUpgrades;
     let worldId = "epstein";
     let worldUnlocked = false;
     let hawkingUnlocked = false;
+    let billClintonUnlocked = false;
     let children = 0n;
     let savedWorlds = {};
     let sprintExpiresAt = 0;
     let sprintCooldownUntil = 0;
     let lastSavedAt = 0;
-    let productionCarry = { epstein: 0n, trump: 0n, hawking: 0n };
+    let productionCarry = { epstein: 0n, trump: 0n, hawking: 0n, bill: 0n };
     let wagerMessage = "Choose a whole-click bet.";
+    let blackjackRound = null;
+    let rouletteSpinning = false;
+    let rouletteRotation = 0;
+    const rouletteWheelOrder = [0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26];
+    const rouletteRedNumbers = new Set([1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36]);
     const SPRINT_DURATION_MS = 20_000;
     const SPRINT_COOLDOWN_MS = 90_000;
     const MAX_SPRINT_COOLDOWN_MS = 15_000;
@@ -499,11 +831,24 @@
     const blackjackMode = document.getElementById("blackjackMode");
     const blackjackStatusEl = document.getElementById("blackjackStatus");
     const blackjackBtn = document.getElementById("blackjackBtn");
+    const blackjackHitBtn = document.getElementById("blackjackHit");
+    const blackjackStandBtn = document.getElementById("blackjackStand");
+    const blackjackDoubleBtn = document.getElementById("blackjackDouble");
+    const blackjackSplitBtn = document.getElementById("blackjackSplit");
+    const blackjackBalanceEl = document.getElementById("blackjackBalance");
+    const dealerCardsEl = document.getElementById("dealerCards");
+    const dealerScoreEl = document.getElementById("dealerScore");
+    const playerHandsEl = document.getElementById("playerHands");
     const rouletteInput = document.getElementById("rouletteInput");
     const rouletteMode = document.getElementById("rouletteMode");
-    const rouletteColor = document.getElementById("rouletteColor");
+    const rouletteBetType = document.getElementById("rouletteBetType");
+    const rouletteTarget = document.getElementById("rouletteTarget");
     const rouletteStatusEl = document.getElementById("rouletteStatus");
     const rouletteBtn = document.getElementById("rouletteBtn");
+    const rouletteWheelEl = document.getElementById("rouletteWheel");
+    const rouletteHubEl = document.getElementById("rouletteHub");
+    const rouletteResultEl = document.getElementById("rouletteResult");
+    const rouletteBalanceEl = document.getElementById("rouletteBalance");
     const btn = document.getElementById("clickBtn");
     const epsteinImage = btn.getAttribute("src");
     const resetBtn = document.getElementById("resetBtn");
@@ -552,7 +897,7 @@
 
     function restoreWorld(id, state = {}) {
       worldId = id;
-      upgrades = { epstein: epsteinUpgrades, trump: trumpUpgrades, hawking: hawkingUpgrades }[id];
+      upgrades = { epstein: epsteinUpgrades, trump: trumpUpgrades, hawking: hawkingUpgrades, bill: billClintonUpgrades }[id];
       score10 = state.score10 ? BigInt(state.score10) : 0n;
       perClick = state.perClick ? BigInt(state.perClick) : 1n;
       upgradesOwned = state.upgradesOwned ? BigInt(state.upgradesOwned) : 0n;
@@ -569,6 +914,7 @@
         currentWorld: worldId,
         worldUnlocked,
         hawkingUnlocked,
+        billClintonUnlocked,
         children: children.toString(),
         sprintExpiresAt,
         sprintCooldownUntil,
@@ -595,17 +941,21 @@
         }
         const finalOwned = BigInt(savedWorlds.epstein?.upgradeOwned?.final || "0");
         const bigLeagueOwned = BigInt(savedWorlds.trump?.upgradeOwned?.bigleague || "0");
+        const cosmosOwned = BigInt(savedWorlds.hawking?.upgradeOwned?.cosmos || "0");
         worldUnlocked = data.worldUnlocked === true || finalOwned >= 10n;
         hawkingUnlocked = data.hawkingUnlocked === true || bigLeagueOwned >= 10n;
+        billClintonUnlocked = data.billClintonUnlocked === true || cosmosOwned >= 20n;
         children = BigInt(data.children || "0");
         sprintExpiresAt = Number.isFinite(data.sprintExpiresAt) ? data.sprintExpiresAt : 0;
         sprintCooldownUntil = Number.isFinite(data.sprintCooldownUntil) ? data.sprintCooldownUntil : 0;
         lastSavedAt = Number.isFinite(data.lastSavedAt) ? data.lastSavedAt : 0;
         const ownedUniversal = new Set(Array.isArray(data.universalUpgrades) ? data.universalUpgrades : []);
         universalUpgrades.forEach(u => { u.owned = ownedUniversal.has(u.id); });
-        const startWorld = data.currentWorld === "hawking" && hawkingUnlocked
-          ? "hawking"
-          : data.currentWorld === "trump" && worldUnlocked ? "trump" : "epstein";
+        const startWorld = data.currentWorld === "bill" && billClintonUnlocked
+          ? "bill"
+          : data.currentWorld === "hawking" && hawkingUnlocked
+            ? "hawking"
+            : data.currentWorld === "trump" && worldUnlocked ? "trump" : "epstein";
         restoreWorld(startWorld, savedWorlds[startWorld]);
         applyOfflineProgress(lastSavedAt);
       } catch (e) {}
@@ -755,6 +1105,7 @@
       const ids = ["epstein"];
       if (worldUnlocked) ids.push("trump");
       if (hawkingUnlocked) ids.push("hawking");
+      if (billClintonUnlocked) ids.push("bill");
       return ids;
     }
 
@@ -803,6 +1154,317 @@
       return { amount, mode: "clicks", label: typeName, wager };
     }
 
+    function createBlackjackDeck() {
+      const deck = [];
+      ["S", "H", "D", "C"].forEach(suit => {
+        for (let rank = 1; rank <= 13; rank += 1) {
+          deck.push({
+            rank,
+            label: rank === 1 ? "A" : rank === 11 ? "J" : rank === 12 ? "Q" : rank === 13 ? "K" : String(rank),
+            suit
+          });
+        }
+      });
+      for (let index = deck.length - 1; index > 0; index -= 1) {
+        const swapIndex = Math.floor(Math.random() * (index + 1));
+        [deck[index], deck[swapIndex]] = [deck[swapIndex], deck[index]];
+      }
+      return deck;
+    }
+
+    function drawBlackjackCard(round) {
+      return round.deck.pop();
+    }
+
+    function blackjackCardValue(card) {
+      return card.rank === 1 ? 11 : Math.min(card.rank, 10);
+    }
+
+    function blackjackScore(cards) {
+      let total = cards.reduce((sum, card) => sum + blackjackCardValue(card), 0);
+      let aces = cards.filter(card => card.rank === 1).length;
+      while (total > 21 && aces > 0) {
+        total -= 10;
+        aces -= 1;
+      }
+      return total;
+    }
+
+    function addStake(mode, amount) {
+      if (mode === "children") children += amount;
+      else score10 += amount * 10n;
+    }
+
+    function takeStake(mode, amount) {
+      if (mode === "children") children -= amount;
+      else score10 -= amount * 10n;
+    }
+
+    function makePlayingCard(card, hidden = false) {
+      const element = document.createElement("div");
+      element.className = "playingCard" + (card.suit === "H" || card.suit === "D" ? " redCard" : "");
+      if (hidden) {
+        element.className = "playingCard hiddenCard";
+        element.textContent = "?";
+        element.setAttribute("aria-label", "Face-down card");
+      } else {
+        const suitSymbols = { S: "♠", H: "♥", D: "♦", C: "♣" };
+        element.textContent = `${card.label}\n${suitSymbols[card.suit]}`;
+        element.style.whiteSpace = "pre-line";
+        element.setAttribute("aria-label", `${card.label} of ${{ S: "spades", H: "hearts", D: "diamonds", C: "clubs" }[card.suit]}`);
+      }
+      return element;
+    }
+
+    function renderBlackjackTable() {
+      const round = blackjackRound;
+      dealerCardsEl.replaceChildren();
+      playerHandsEl.replaceChildren();
+      if (!round) {
+        dealerScoreEl.textContent = "WAITING";
+        return;
+      }
+
+      round.dealer.forEach((card, index) => {
+        dealerCardsEl.appendChild(makePlayingCard(card, round.active && index === 1));
+      });
+      dealerScoreEl.textContent = round.active
+        ? `${blackjackScore(round.dealer.slice(0, 1))} + ?`
+        : String(blackjackScore(round.dealer));
+
+      round.hands.forEach((hand, index) => {
+        const handEl = document.createElement("div");
+        handEl.className = "playerHand" + (round.active && index === round.currentHand ? " activeHand" : "");
+        const title = document.createElement("div");
+        title.className = "handTitle";
+        title.textContent = `YOU${round.hands.length > 1 ? ` ${index + 1}` : ""} · ${blackjackScore(hand.cards)} · BET ${commaBigInt(hand.bet)}`;
+        const cards = document.createElement("div");
+        cards.className = "cardRow";
+        hand.cards.forEach(card => cards.appendChild(makePlayingCard(card)));
+        handEl.append(title, cards);
+        playerHandsEl.appendChild(handEl);
+      });
+    }
+
+    function canSplitBlackjackHand() {
+      const round = blackjackRound;
+      if (!round?.active || round.hands.length >= 4) return false;
+      const hand = round.hands[round.currentHand];
+      if (!hand || hand.done || hand.cards.length !== 2 || blackjackCardValue(hand.cards[0]) !== blackjackCardValue(hand.cards[1])) return false;
+      return round.mode === "children" ? children >= hand.bet : score10 >= hand.bet * 10n;
+    }
+
+    function canDoubleDownBlackjackHand() {
+      const round = blackjackRound;
+      if (!round?.active) return false;
+      const hand = round.hands[round.currentHand];
+      if (!hand || hand.done || hand.cards.length !== 2) return false;
+      return round.mode === "children" ? children >= hand.bet : score10 >= hand.bet * 10n;
+    }
+
+    function refreshBlackjackControls() {
+      const active = blackjackRound?.active === true;
+      blackjackBtn.disabled = active || parseStake(blackjackInput, blackjackMode, "Blackjack") === null;
+      blackjackInput.disabled = active;
+      blackjackMode.disabled = active;
+      blackjackHitBtn.disabled = !active;
+      blackjackStandBtn.disabled = !active;
+      blackjackDoubleBtn.disabled = !canDoubleDownBlackjackHand();
+      blackjackSplitBtn.disabled = !canSplitBlackjackHand();
+    }
+
+    function startBlackjackRound() {
+      const stake = parseStake(blackjackInput, blackjackMode, "Blackjack");
+      if (!stake || blackjackRound?.active) return;
+      takeStake(stake.mode, stake.amount);
+      const deck = createBlackjackDeck();
+      blackjackRound = {
+        active: true,
+        mode: stake.mode,
+        deck,
+        currentHand: 0,
+        dealer: [deck.pop(), deck.pop()],
+        hands: [{ cards: [deck.pop(), deck.pop()], bet: stake.amount, done: false, naturalEligible: true }],
+        status: "Your move: hit, stand, double down, or split a matching pair."
+      };
+      renderBlackjackTable();
+      const playerNatural = blackjackScore(blackjackRound.hands[0].cards) === 21;
+      const dealerNatural = blackjackScore(blackjackRound.dealer) === 21;
+      if (playerNatural || dealerNatural) {
+        finishBlackjackRound();
+        return;
+      }
+      blackjackStatusEl.textContent = blackjackRound.status;
+      fullUpdate();
+    }
+
+    function finishBlackjackRound() {
+      const round = blackjackRound;
+      const canDealerWin = round.hands.some(hand => blackjackScore(hand.cards) <= 21);
+      if (canDealerWin) {
+        while (blackjackScore(round.dealer) < 17) round.dealer.push(drawBlackjackCard(round));
+      }
+      const dealerTotal = blackjackScore(round.dealer);
+      const dealerNatural = round.dealer.length === 2 && dealerTotal === 21;
+      const results = [];
+      round.hands.forEach((hand, index) => {
+        const bet = hand.bet;
+        const playerTotal = blackjackScore(hand.cards);
+        const playerNatural = hand.naturalEligible && hand.cards.length === 2 && playerTotal === 21;
+        if (playerTotal > 21) {
+          results.push(`Hand ${index + 1}: bust`);
+        } else if (playerNatural && dealerNatural) {
+          addStake(round.mode, bet);
+          results.push(`Hand ${index + 1}: natural push`);
+        } else if (playerNatural) {
+          if (round.mode === "children") addStake(round.mode, bet * 2n + (bet + 1n) / 2n);
+          else score10 += bet * 25n;
+          results.push(round.mode === "children" && bet % 2n !== 0n
+            ? `Hand ${index + 1}: natural blackjack pays 3:2, rounded up to a whole child`
+            : `Hand ${index + 1}: natural blackjack pays 3:2`);
+        } else if (dealerNatural) {
+          results.push(`Hand ${index + 1}: dealer natural`);
+        } else if (dealerTotal > 21 || playerTotal > dealerTotal) {
+          addStake(round.mode, bet * 2n);
+          results.push(`Hand ${index + 1}: win`);
+        } else if (playerTotal === dealerTotal) {
+          addStake(round.mode, bet);
+          results.push(`Hand ${index + 1}: push`);
+        } else {
+          results.push(`Hand ${index + 1}: dealer wins`);
+        }
+      });
+      round.active = false;
+      round.status = `Dealer ${dealerTotal}. ${results.join(" · ")}.`;
+      renderBlackjackTable();
+      blackjackStatusEl.textContent = round.status;
+      fullUpdate();
+    }
+
+    function advanceBlackjackHand() {
+      const round = blackjackRound;
+      for (let index = round.currentHand + 1; index < round.hands.length; index += 1) {
+        if (!round.hands[index].done) {
+          round.currentHand = index;
+          round.status = `Playing hand ${index + 1}. Hit or stand.`;
+          renderBlackjackTable();
+          blackjackStatusEl.textContent = round.status;
+          fullUpdate();
+          return;
+        }
+      }
+      finishBlackjackRound();
+    }
+
+    function doubleDownBlackjackHand() {
+      if (!canDoubleDownBlackjackHand()) return;
+      const round = blackjackRound;
+      const hand = round.hands[round.currentHand];
+      takeStake(round.mode, hand.bet);
+      hand.bet *= 2n;
+      hand.naturalEligible = false;
+      hand.cards.push(drawBlackjackCard(round));
+      hand.done = true;
+      round.status = `Hand ${round.currentHand + 1} doubled down.`;
+      advanceBlackjackHand();
+    }
+
+    function updateRouletteTargets() {
+      const options = {
+        number: Array.from({ length: 37 }, (_, number) => [String(number), String(number)]),
+        color: [["red", "Red"], ["black", "Black"]],
+        parity: [["even", "Even"], ["odd", "Odd"]],
+        range: [["low", "Low (1-18)"], ["high", "High (19-36)"]]
+      }[rouletteBetType.value];
+      const previous = rouletteTarget.value;
+      rouletteTarget.replaceChildren();
+      options.forEach(([value, label]) => {
+        const option = document.createElement("option");
+        option.value = value;
+        option.textContent = label;
+        rouletteTarget.appendChild(option);
+      });
+      if (options.some(([value]) => value === previous)) rouletteTarget.value = previous;
+    }
+
+    function rouletteColorFor(number) {
+      return number === 0 ? "green" : rouletteRedNumbers.has(number) ? "red" : "black";
+    }
+
+    function renderRouletteWheel() {
+      const step = 360 / rouletteWheelOrder.length;
+      const segments = [];
+      rouletteWheelOrder.forEach((number, index) => {
+        const start = index * step;
+        const end = (index + 1) * step;
+        const color = rouletteColorFor(number);
+        const cssColor = color === "green" ? "#14834b" : color === "red" ? "#b32d36" : "#151817";
+        segments.push(`${cssColor} ${start}deg ${end}deg`);
+
+        const pocket = document.createElement("button");
+        pocket.type = "button";
+        pocket.className = `roulettePocket ${color}Pocket`;
+        pocket.textContent = String(number);
+        pocket.setAttribute("aria-label", `Choose straight-up number ${number}`);
+        pocket.setAttribute("aria-pressed", "false");
+        const angle = index * step;
+        pocket.style.transform = `translate(-50%,-50%) rotate(${angle}deg) translateY(-${rouletteWheelEl.clientWidth * 0.39}px) rotate(${-angle}deg)`;
+        pocket.addEventListener("click", () => {
+          rouletteBetType.value = "number";
+          updateRouletteTargets();
+          rouletteTarget.value = String(number);
+          refreshArcadeUI();
+        });
+        rouletteWheelEl.insertBefore(pocket, rouletteHubEl);
+      });
+      rouletteWheelEl.style.background = `conic-gradient(from -${step / 2}deg, ${segments.join(",")})`;
+    }
+
+    function spinRoulette() {
+      const stake = parseStake(rouletteInput, rouletteMode, "Roulette");
+      if (!stake || rouletteSpinning) return;
+      const betType = rouletteBetType.value;
+      const target = rouletteTarget.value;
+      takeStake(stake.mode, stake.amount);
+      rouletteSpinning = true;
+      rouletteBtn.disabled = true;
+      rouletteWheelEl.querySelectorAll(".roulettePocket").forEach(pocket => { pocket.disabled = true; });
+
+      const resultIndex = Math.floor(Math.random() * rouletteWheelOrder.length);
+      const result = rouletteWheelOrder[resultIndex];
+      const step = 360 / rouletteWheelOrder.length;
+      rouletteRotation += 360 * 5 + (rouletteWheelOrder.length - resultIndex) * step;
+      rouletteWheelEl.style.transition = "none";
+      rouletteWheelEl.style.transform = `rotate(${rouletteRotation - 360 * 5 - (rouletteWheelOrder.length - resultIndex) * step}deg)`;
+      void rouletteWheelEl.offsetWidth;
+      rouletteWheelEl.style.transition = "transform 3.6s cubic-bezier(.12,.72,.12,1)";
+      rouletteWheelEl.style.transform = `rotate(${rouletteRotation}deg)`;
+      rouletteHubEl.textContent = "...";
+
+      setTimeout(() => {
+        const color = rouletteColorFor(result);
+        const won = betType === "number"
+          ? Number(target) === result
+          : betType === "color"
+            ? color === target
+            : betType === "parity"
+              ? result !== 0 && (result % 2 === 0 ? "even" : "odd") === target
+              : result !== 0 && (result <= 18 ? "low" : "high") === target;
+        const multiplier = betType === "number" ? 36n : 2n;
+        if (won) addStake(stake.mode, stake.amount * multiplier);
+        rouletteSpinning = false;
+        const displayColor = color.toUpperCase();
+        rouletteHubEl.textContent = String(result);
+        rouletteResultEl.textContent = `Result: ${result} ${displayColor}`;
+        rouletteStatusEl.textContent = won
+          ? `Winner! ${betType === "number" ? "35:1" : "1:1"} profit paid.`
+          : `No win. ${result} ${displayColor} took the bet.`;
+        rouletteWheelEl.querySelectorAll(".roulettePocket").forEach(pocket => { pocket.disabled = false; });
+        fullUpdate();
+      }, 3700);
+      fullUpdate();
+    }
+
     function refreshArcadeUI() {
       const now = Date.now();
       const activeDuration = sprintDurationMs();
@@ -823,28 +1485,45 @@
       wagerOddsEl.textContent = `Win chance: ${formatPercentBps(wagerChanceBps())} | Payout bonus: +${formatPercentBps(wagerPayoutBonusBps())} | Sprint: ${activeDuration / 1000}s / ${activeCooldown / 1000}s cooldown`;
       wagerStatusEl.textContent = wagerMessage;
       wagerBtn.disabled = parseWager10() === null;
-      blackjackBtn.disabled = parseStake(blackjackInput, blackjackMode, "Blackjack") === null;
-      rouletteBtn.disabled = parseStake(rouletteInput, rouletteMode, "Roulette") === null;
+      refreshBlackjackControls();
+      rouletteBtn.disabled = rouletteSpinning || parseStake(rouletteInput, rouletteMode, "Roulette") === null;
+      const blackjackCurrency = blackjackMode.value === "children"
+        ? `${commaBigInt(children)} children`
+        : `${fmtScore10(score10)} clicks`;
+      const rouletteCurrency = rouletteMode.value === "children"
+        ? `${commaBigInt(children)} children`
+        : `${fmtScore10(score10)} clicks`;
+      blackjackBalanceEl.textContent = `AVAILABLE: ${blackjackCurrency}`;
+      rouletteBalanceEl.textContent = `AVAILABLE: ${rouletteCurrency}`;
+      rouletteWheelEl.querySelectorAll(".roulettePocket").forEach(pocket => {
+        pocket.setAttribute("aria-pressed", String(rouletteBetType.value === "number" && pocket.textContent === rouletteTarget.value));
+      });
       childChanceEl.textContent = formatPercentBps(50n + globalEffect("childChanceBps"));
     }
 
     // Top UI
     function updateTopUI() {
-      const worldNames = { epstein: "EPSTEIN", trump: "TRUMP", hawking: "STEPHEN HAWKING" };
-      const worldTitles = { epstein: "EPSTEIN CLICKER", trump: "TRUMP CLICKER", hawking: "HAWKING CLICKER" };
+      const worldNames = { epstein: "EPSTEIN", trump: "TRUMP", hawking: "STEPHEN HAWKING", bill: "BILL CLINTON" };
+      const worldTitles = { epstein: "EPSTEIN CLICKER", trump: "TRUMP CLICKER", hawking: "HAWKING CLICKER", bill: "CLINTON CLICKER" };
       const worldList = unlockedWorldIds();
       const currentIndex = worldList.indexOf(worldId);
       const nextWorld = worldList[(currentIndex + 1) % worldList.length];
       document.body.classList.toggle("trumpWorld", worldId === "trump");
       document.body.classList.toggle("hawkingWorld", worldId === "hawking");
+      document.body.classList.toggle("billClintonWorld", worldId === "bill");
       gameTitleEl.textContent = worldTitles[worldId];
       worldNameEl.textContent = worldNames[worldId];
       const finalOwned = epsteinUpgrades.find(u => u.id === "final").owned;
       const bigLeagueOwned = trumpUpgrades.find(u => u.id === "bigleague").owned;
+      const cosmosOwned = hawkingUpgrades.find(u => u.id === "cosmos").owned;
       if (worldId === "epstein" && !worldUnlocked) {
         worldProgressEl.textContent = `THE UNTOUCHABLE: ${commaBigInt(finalOwned)} / 10`;
       } else if (worldId === "trump" && !hawkingUnlocked) {
         worldProgressEl.textContent = `THE BIG LEAGUE: ${commaBigInt(bigLeagueOwned)} / 10`;
+      } else if (worldId === "hawking" && !billClintonUnlocked) {
+        worldProgressEl.textContent = `THE OBSERVABLE COSMOS: ${commaBigInt(cosmosOwned)} / 20`;
+      } else if (worldId === "bill" && billClintonUnlocked) {
+        worldProgressEl.textContent = "WORLD UNLOCKED";
       } else {
         worldProgressEl.textContent = "WORLD UNLOCKED";
       }
@@ -852,8 +1531,8 @@
       worldBtn.textContent = worldList.length < 2
         ? "TRUMP WORLD LOCKED"
         : `GO TO ${worldNames[nextWorld]} WORLD`;
-      btn.alt = worldId === "trump" ? "Click Trump" : worldId === "hawking" ? "Click Stephen Hawking" : "Click";
-      btn.src = worldId === "trump" ? trumpImage : worldId === "hawking" ? hawkingImage : epsteinImage;
+      btn.alt = worldId === "trump" ? "Click Trump" : worldId === "hawking" ? "Click Stephen Hawking" : worldId === "bill" ? "Click Bill Clinton" : "Click";
+      btn.src = worldId === "trump" ? trumpImage : worldId === "hawking" ? hawkingImage : worldId === "bill" ? billClintonImage : epsteinImage;
       scoreEl.textContent = fmtScore10(score10);
       perClickEl.textContent = commaBigInt(effectivePerClick());
 
@@ -896,6 +1575,9 @@
       }
       if (worldId === "trump" && upgrades.find(x => x.id === "bigleague").owned >= 10n) {
         hawkingUnlocked = true;
+      }
+      if (worldId === "hawking" && upgrades.find(x => x.id === "cosmos").owned >= 20n) {
+        billClintonUnlocked = true;
       }
 
       fullUpdate();
@@ -956,47 +1638,58 @@
 
     blackjackInput.addEventListener("input", refreshArcadeUI);
     blackjackMode.addEventListener("change", refreshArcadeUI);
-    blackjackBtn.addEventListener("click", () => {
-      const state = parseStake(blackjackInput, blackjackMode, "Blackjack");
-      if (!state) {
-        blackjackStatusEl.textContent = "Need a valid bet before dealing.";
+    blackjackBtn.addEventListener("click", startBlackjackRound);
+    blackjackHitBtn.addEventListener("click", () => {
+      const round = blackjackRound;
+      if (!round?.active) return;
+      const hand = round.hands[round.currentHand];
+      hand.naturalEligible = false;
+      hand.cards.push(drawBlackjackCard(round));
+      const total = blackjackScore(hand.cards);
+      if (total >= 21) {
+        hand.done = true;
+        round.status = total > 21 ? `Hand ${round.currentHand + 1} busts at ${total}.` : `Hand ${round.currentHand + 1} has 21.`;
+        advanceBlackjackHand();
         return;
       }
-      if (state.mode === "children") children -= state.amount; else score10 -= state.wager;
-      const player = 12 + Math.floor(Math.random() * 10);
-      const dealer = 12 + Math.floor(Math.random() * 10);
-      if (player > dealer && player <= 21) {
-        const payout = state.amount * 2n;
-        if (state.mode === "children") children += payout; else score10 += payout * 10n;
-        blackjackStatusEl.textContent = `You win! ${state.mode === "children" ? `${payout} children` : `${fmtScore10(payout * 10n)} clicks`} paid out.`;
-      } else {
-        blackjackStatusEl.textContent = `Dealer wins. You lost ${state.mode === "children" ? `${state.amount} children` : `${fmtScore10(state.wager)} clicks`}.`;
-      }
+      round.status = `Hand ${round.currentHand + 1}: ${total}. Hit or stand.`;
+      renderBlackjackTable();
+      blackjackStatusEl.textContent = round.status;
       fullUpdate();
+    });
+    blackjackDoubleBtn.addEventListener("click", doubleDownBlackjackHand);
+    blackjackStandBtn.addEventListener("click", () => {
+      if (!blackjackRound?.active) return;
+      blackjackRound.hands[blackjackRound.currentHand].done = true;
+      advanceBlackjackHand();
+    });
+    blackjackSplitBtn.addEventListener("click", () => {
+      if (!canSplitBlackjackHand()) return;
+      const round = blackjackRound;
+      const hand = round.hands[round.currentHand];
+      const [first, second] = hand.cards;
+      const handBet = hand.bet;
+      const splitAces = first.rank === 1 && second.rank === 1;
+      takeStake(round.mode, handBet);
+      round.hands.splice(round.currentHand, 1,
+        { cards: [first, drawBlackjackCard(round)], bet: handBet, done: splitAces, naturalEligible: false },
+        { cards: [second, drawBlackjackCard(round)], bet: handBet, done: splitAces, naturalEligible: false }
+      );
+      round.status = splitAces ? "Split aces receive one card each." : "Hand split. Play each hand in turn.";
+      if (splitAces) {
+        advanceBlackjackHand();
+      } else {
+        renderBlackjackTable();
+        blackjackStatusEl.textContent = round.status;
+        fullUpdate();
+      }
     });
 
     rouletteInput.addEventListener("input", refreshArcadeUI);
     rouletteMode.addEventListener("change", refreshArcadeUI);
-    rouletteColor.addEventListener("change", refreshArcadeUI);
-    rouletteBtn.addEventListener("click", () => {
-      const state = parseStake(rouletteInput, rouletteMode, "Roulette");
-      if (!state) {
-        rouletteStatusEl.textContent = "Need a valid bet before spinning.";
-        return;
-      }
-      const wheel = Math.floor(Math.random() * 38);
-      const color = wheel === 0 ? "green" : wheel % 2 === 0 ? "black" : "red";
-      const choice = rouletteColor.value;
-      if (state.mode === "children") children -= state.amount; else score10 -= state.wager;
-      if (choice === color) {
-        const payout = state.amount * 2n;
-        if (state.mode === "children") children += payout; else score10 += payout * 10n;
-        rouletteStatusEl.textContent = `Wheel landed on ${color.toUpperCase()} — you win ${state.mode === "children" ? `${payout} children` : `${fmtScore10(payout * 10n)} clicks`}.`;
-      } else {
-        rouletteStatusEl.textContent = `Wheel landed on ${color.toUpperCase()} — you lost ${state.mode === "children" ? `${state.amount} children` : `${fmtScore10(state.wager)} clicks`}.`;
-      }
-      fullUpdate();
-    });
+    rouletteBetType.addEventListener("change", updateRouletteTargets);
+    rouletteTarget.addEventListener("change", refreshArcadeUI);
+    rouletteBtn.addEventListener("click", spinRoulette);
 
     // Clicking
     btn.addEventListener("click", (e) => {
@@ -1006,7 +1699,8 @@
       const worlds = [
         { id: "epstein", upgrades: epsteinUpgrades },
         { id: "trump", upgrades: trumpUpgrades },
-        { id: "hawking", upgrades: hawkingUpgrades }
+        { id: "hawking", upgrades: hawkingUpgrades },
+        { id: "bill", upgrades: billClintonUpgrades }
       ];
       const childrenFound = worlds.reduce((found, world) => {
         return found + world.upgrades.filter(u => {
@@ -1065,6 +1759,8 @@
     });
 
     // Init
+    updateRouletteTargets();
+    renderRouletteWheel();
     renderGlobalShop();
     fullUpdate();
   </script>
