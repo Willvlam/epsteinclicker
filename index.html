@@ -1021,8 +1021,8 @@
         hawkingUnlocked = data.hawkingUnlocked === true || bigLeagueOwned >= 10n;
         billClintonUnlocked = data.billClintonUnlocked === true || cosmosOwned >= 20n;
         rebirths = BigInt(data.rebirths || "0") > 0n ? 1n : 0n;
-        maxwellUnlocked = data.maxwellUnlocked === true
-          || (rebirths >= 1n && BigInt(savedWorlds.bill?.upgradesOwned || "0") >= 15n);
+        maxwellUnlocked = rebirths >= 1n
+          && BigInt(savedWorlds.bill?.upgradeOwned?.commander || "0") >= 15n;
         children = BigInt(data.children || "0");
         sprintExpiresAt = Number.isFinite(data.sprintExpiresAt) ? data.sprintExpiresAt : 0;
         sprintCooldownUntil = Number.isFinite(data.sprintCooldownUntil) ? data.sprintCooldownUntil : 0;
@@ -1639,6 +1639,7 @@
       const finalOwned = epsteinUpgrades.find(u => u.id === "final").owned;
       const bigLeagueOwned = trumpUpgrades.find(u => u.id === "bigleague").owned;
       const cosmosOwned = hawkingUpgrades.find(u => u.id === "cosmos").owned;
+      const clintonFinalOwned = billClintonUpgrades.find(u => u.id === "commander").owned;
       if (worldId === "epstein" && !worldUnlocked) {
         worldProgressEl.textContent = `THE UNTOUCHABLE: ${commaBigInt(finalOwned)} / 10`;
       } else if (worldId === "trump" && !hawkingUnlocked) {
@@ -1646,7 +1647,7 @@
       } else if (worldId === "hawking" && !billClintonUnlocked) {
         worldProgressEl.textContent = `THE OBSERVABLE COSMOS: ${commaBigInt(cosmosOwned)} / 20`;
       } else if (worldId === "bill" && !maxwellUnlocked) {
-        worldProgressEl.textContent = `CLINTON UPGRADES: ${commaBigInt(upgradesOwned)} / 15 | REBIRTHS: ${commaBigInt(rebirths)} / 1`;
+        worldProgressEl.textContent = `COMMANDER IN CHIEF: ${commaBigInt(clintonFinalOwned)} / 15 | REBIRTHS: ${commaBigInt(rebirths)} / 1`;
       } else if (worldId === "bill" && billClintonUnlocked) {
         worldProgressEl.textContent = "WORLD UNLOCKED";
       } else {
@@ -1711,7 +1712,7 @@
       if (worldId === "hawking" && upgrades.find(x => x.id === "cosmos").owned >= 20n) {
         billClintonUnlocked = true;
       }
-      if (worldId === "bill" && upgradesOwned >= 15n && rebirths >= 1n) {
+      if (worldId === "bill" && upgrades.find(x => x.id === "commander").owned >= 15n && rebirths >= 1n) {
         maxwellUnlocked = true;
       }
 
