@@ -1718,7 +1718,7 @@
 
     rebirthBtn.addEventListener("click", () => {
       if (!canRebirth()) return;
-      if (!window.confirm("Rebirth now? This resets all world clicks, all world upgrades, children, and the Universal Theory Tree. Your rebirth bonus and unlocked worlds will remain.")) return;
+      if (!window.confirm("Rebirth now? This resets all world clicks, all world upgrades, children, the Universal Theory Tree, and world unlocks. Your rebirth bonus will remain.")) return;
 
       rebirths += 1n;
       Object.entries(worldUpgradeSets).forEach(([id, worldUpgrades]) => {
@@ -1732,6 +1732,10 @@
       upgradesOwned = 0n;
       children = 0n;
       savedWorlds = {};
+      worldUnlocked = false;
+      hawkingUnlocked = false;
+      billClintonUnlocked = false;
+      maxwellUnlocked = false;
       productionCarry = { epstein: 0n, trump: 0n, hawking: 0n, bill: 0n, maxwell: 0n };
       universalUpgrades.forEach(upgrade => { upgrade.owned = false; });
       sprintExpiresAt = 0;
