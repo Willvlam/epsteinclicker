@@ -470,6 +470,11 @@
       --danger:#ff7a66;
       background:#0a0f26;
     }
+    body.maxwellWorld{
+      --green:#e3b7ff;
+      --danger:#ff6685;
+      background:#16091f;
+    }
     .floatText{
       position:fixed;
       pointer-events:none;
@@ -512,6 +517,7 @@
       CHILDREN: <span id="children">0</span><br>
       Each owned upgrade type rolls separately for children: <span id="childChance">0.50%</span> chance per click.
     </div>
+    <div class="sub">REBIRTHS: <span id="rebirthCount">0</span> | ALL PRODUCTION: <span id="rebirthMultiplier">1x</span></div>
     <button id="drawerToggle" type="button" class="drawerToggle">ARCADE</button>
     <aside id="sideDrawer" class="sideDrawer" aria-label="Upgrades and minigames drawer">
       <div class="drawerHeader">
@@ -636,6 +642,12 @@
       <div class="sub">Spend children to boost clicks, passive income, child-finding odds, and arcade rewards.</div>
       <div id="globalShop"></div>
     </div>
+    <div class="panel">
+      <h2>REBIRTH</h2>
+      <div class="sub">Requires 15 of every unlocked world's final upgrade. Resets clicks, world upgrades, children, and the Universal Theory Tree for a permanent 2x production bonus per rebirth.</div>
+      <div id="rebirthRequirements" class="sub"></div>
+      <button id="rebirthBtn" type="button" disabled>REBIRTH</button>
+    </div>
   </div>
 
   <script>
@@ -738,6 +750,29 @@
       { id:"commander", name:"The Commander in Chief", cost: 1000000000000000000000n, add: 100000000000000000n, owned: 0n, scaleNum: 140n, scaleDen: 100n }
     ];
 
+    const maxwellUpgrades = [
+      { id:"network", name:"Private Network", cost: 100000n, add: 100n, owned: 0n, scaleNum: 125n, scaleDen: 100n },
+      { id:"introductions", name:"Social Introductions", cost: 1000000n, add: 200n, owned: 0n, scaleNum: 140n, scaleDen: 100n },
+      { id:"events", name:"Exclusive Events", cost: 2000000n, add: 400n, owned: 0n, scaleNum: 140n, scaleDen: 100n },
+      { id:"contacts", name:"International Contacts", cost: 5000000n, add: 1000n, owned: 0n, scaleNum: 140n, scaleDen: 100n },
+      { id:"estates", name:"Private Estates", cost: 10000000n, add: 10000n, owned: 0n, scaleNum: 140n, scaleDen: 100n },
+      { id:"travel", name:"Global Travel", cost: 100000000n, add: 100000n, owned: 0n, scaleNum: 140n, scaleDen: 100n },
+      { id:"staff", name:"Personal Staff", cost: 500000000n, add: 1000000n, owned: 0n, scaleNum: 140n, scaleDen: 100n },
+      { id:"influence", name:"Influence Network", cost: 1000000000n, add: 5000000n, owned: 0n, scaleNum: 140n, scaleDen: 100n },
+      { id:"jet", name:"Private Jet", cost: 10000000000n, add: 50000000n, owned: 0n, scaleNum: 140n, scaleDen: 100n },
+      { id:"foundations", name:"International Foundations", cost: 100000000000n, add: 250000000n, owned: 0n, scaleNum: 140n, scaleDen: 100n },
+      { id:"lobby", name:"Global Lobby", cost: 1000000000000n, add: 1500000000n, owned: 0n, scaleNum: 140n, scaleDen: 100n },
+      { id:"press", name:"Press Network", cost: 10000000000000n, add: 10000000000n, owned: 0n, scaleNum: 140n, scaleDen: 100n },
+      { id:"holdings", name:"Offshore Holdings", cost: 100000000000000n, add: 75000000000n, owned: 0n, scaleNum: 140n, scaleDen: 100n },
+      { id:"alliances", name:"Elite Alliances", cost: 1000000000000000n, add: 500000000000n, owned: 0n, scaleNum: 140n, scaleDen: 100n },
+      { id:"operations", name:"International Operations", cost: 10000000000000000n, add: 3500000000000n, owned: 0n, scaleNum: 140n, scaleDen: 100n },
+      { id:"patrons", name:"Powerful Patrons", cost: 100000000000000000n, add: 25000000000000n, owned: 0n, scaleNum: 140n, scaleDen: 100n },
+      { id:"empire", name:"Global Empire", cost: 1000000000000000000n, add: 180000000000000n, owned: 0n, scaleNum: 140n, scaleDen: 100n },
+      { id:"legacy", name:"Lasting Legacy", cost: 10000000000000000000n, add: 1500000000000000n, owned: 0n, scaleNum: 140n, scaleDen: 100n },
+      { id:"secrecy", name:"Fortified Secrecy", cost: 100000000000000000000n, add: 12000000000000000n, owned: 0n, scaleNum: 140n, scaleDen: 100n },
+      { id:"final", name:"The Maxwell Network", cost: 1000000000000000000000n, add: 100000000000000000n, owned: 0n, scaleNum: 140n, scaleDen: 100n }
+    ];
+
     const universalUpgrades = [
       { id:"spark", name:"First Spark", description:"+1 per click in every world.", cost: 1n, add: 1n, owned: false, requires: null },
       { id:"notebook", name:"Pocket Notebook", description:"+2 per click in every world.", cost: 2n, add: 2n, owned: false, requires: "spark" },
@@ -774,21 +809,45 @@
       { id:"unified", name:"Unified Theory", description:"Triple click and auto earnings in every world.", cost: 40000000n, multiplier: 3n, owned: false, requires: "mentorship" }
     ];
 
+    const worldUpgradeSets = {
+      epstein: epsteinUpgrades,
+      trump: trumpUpgrades,
+      hawking: hawkingUpgrades,
+      bill: billClintonUpgrades,
+      maxwell: maxwellUpgrades
+    };
+    const initialUpgradeCosts = Object.fromEntries(
+      Object.entries(worldUpgradeSets).map(([id, worldUpgrades]) => [
+        id,
+        new Map(worldUpgrades.map(upgrade => [upgrade.id, upgrade.cost]))
+      ])
+    );
+    const finalUpgradeByWorld = {
+      epstein: "final",
+      trump: "bigleague",
+      hawking: "cosmos",
+      bill: "commander",
+      maxwell: "final"
+    };
+
     const trumpImage = "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/56/Donald_Trump_official_portrait.jpg/960px-Donald_Trump_official_portrait.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail";
     const hawkingImage = "https://upload.wikimedia.org/wikipedia/commons/e/eb/Stephen_Hawking.StarChild.jpg";
     const billClintonImage = "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/49/44_Bill_Clinton_3x4.jpg/960px-44_Bill_Clinton_3x4.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail";
+    const maxwellImage = "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8c/Ghislaine_Maxwell_MDC_mug_shot.webp/960px-Ghislaine_Maxwell_MDC_mug_shot.webp?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail";
 
     let upgrades = epsteinUpgrades;
     let worldId = "epstein";
     let worldUnlocked = false;
     let hawkingUnlocked = false;
     let billClintonUnlocked = false;
+    let maxwellUnlocked = false;
+    let rebirths = 0n;
     let children = 0n;
     let savedWorlds = {};
     let sprintExpiresAt = 0;
     let sprintCooldownUntil = 0;
     let lastSavedAt = 0;
-    let productionCarry = { epstein: 0n, trump: 0n, hawking: 0n, bill: 0n };
+    let productionCarry = { epstein: 0n, trump: 0n, hawking: 0n, bill: 0n, maxwell: 0n };
     let wagerMessage = "Choose a whole-click bet.";
     let blackjackRound = null;
     let rouletteSpinning = false;
@@ -811,6 +870,10 @@
     const worldBtn = document.getElementById("worldBtn");
     const childrenEl = document.getElementById("children");
     const childChanceEl = document.getElementById("childChance");
+    const rebirthCountEl = document.getElementById("rebirthCount");
+    const rebirthMultiplierEl = document.getElementById("rebirthMultiplier");
+    const rebirthRequirementsEl = document.getElementById("rebirthRequirements");
+    const rebirthBtn = document.getElementById("rebirthBtn");
     const drawerToggleEl = document.getElementById("drawerToggle");
     const drawerEl = document.getElementById("sideDrawer");
     const drawerCloseEl = document.getElementById("drawerClose");
@@ -897,7 +960,7 @@
 
     function restoreWorld(id, state = {}) {
       worldId = id;
-      upgrades = { epstein: epsteinUpgrades, trump: trumpUpgrades, hawking: hawkingUpgrades, bill: billClintonUpgrades }[id];
+      upgrades = worldUpgradeSets[id];
       score10 = state.score10 ? BigInt(state.score10) : 0n;
       perClick = state.perClick ? BigInt(state.perClick) : 1n;
       upgradesOwned = state.upgradesOwned ? BigInt(state.upgradesOwned) : 0n;
@@ -915,6 +978,8 @@
         worldUnlocked,
         hawkingUnlocked,
         billClintonUnlocked,
+        maxwellUnlocked,
+        rebirths: rebirths.toString(),
         billPricingVersion: 2,
         children: children.toString(),
         sprintExpiresAt,
@@ -955,6 +1020,9 @@
         worldUnlocked = data.worldUnlocked === true || finalOwned >= 10n;
         hawkingUnlocked = data.hawkingUnlocked === true || bigLeagueOwned >= 10n;
         billClintonUnlocked = data.billClintonUnlocked === true || cosmosOwned >= 20n;
+        rebirths = BigInt(data.rebirths || "0");
+        maxwellUnlocked = data.maxwellUnlocked === true
+          || (rebirths >= 1n && BigInt(savedWorlds.bill?.upgradesOwned || "0") >= 15n);
         children = BigInt(data.children || "0");
         sprintExpiresAt = Number.isFinite(data.sprintExpiresAt) ? data.sprintExpiresAt : 0;
         sprintCooldownUntil = Number.isFinite(data.sprintCooldownUntil) ? data.sprintCooldownUntil : 0;
@@ -963,9 +1031,11 @@
         universalUpgrades.forEach(u => { u.owned = ownedUniversal.has(u.id); });
         const startWorld = data.currentWorld === "bill" && billClintonUnlocked
           ? "bill"
-          : data.currentWorld === "hawking" && hawkingUnlocked
-            ? "hawking"
-            : data.currentWorld === "trump" && worldUnlocked ? "trump" : "epstein";
+          : data.currentWorld === "maxwell" && maxwellUnlocked
+            ? "maxwell"
+            : data.currentWorld === "hawking" && hawkingUnlocked
+              ? "hawking"
+              : data.currentWorld === "trump" && worldUnlocked ? "trump" : "epstein";
         restoreWorld(startWorld, savedWorlds[startWorld]);
         applyOfflineProgress(lastSavedAt);
       } catch (e) {}
@@ -1059,6 +1129,10 @@
       return universalUpgrades.reduce((multiplier, u) => u.owned ? multiplier * (u.multiplier || 1n) : multiplier, 1n);
     }
 
+    function rebirthMultiplier() {
+      return 2n ** rebirths;
+    }
+
     function globalBonus() {
       return universalUpgrades.reduce((bonus, u) => bonus + (u.owned ? (u.add || 0n) : 0n), 0n);
     }
@@ -1088,6 +1162,11 @@
       return globalEffect("wagerPayoutBps");
     }
 
+    function childChanceBps() {
+      const chance = (50n + globalEffect("childChanceBps")) * rebirthMultiplier();
+      return chance > 10000n ? 10000n : chance;
+    }
+
     function sprintDurationMs() {
       return Number(BigInt(SPRINT_DURATION_MS) + globalEffect("sprintDurationMs"));
     }
@@ -1100,7 +1179,7 @@
     function worldClickPower(id, includeSprint = true) {
       const basePerClick = id === worldId ? perClick : BigInt(savedWorlds[id]?.perClick || "1");
       const boost = includeSprint && Date.now() < sprintExpiresAt ? 2n : 1n;
-      return (basePerClick * globalMultiplier() + globalBonus()) * boost;
+      return (basePerClick * globalMultiplier() + globalBonus()) * rebirthMultiplier() * boost;
     }
 
     function worldAutoPerSec10(id, includeSprint = true) {
@@ -1116,7 +1195,38 @@
       if (worldUnlocked) ids.push("trump");
       if (hawkingUnlocked) ids.push("hawking");
       if (billClintonUnlocked) ids.push("bill");
+      if (maxwellUnlocked) ids.push("maxwell");
       return ids;
+    }
+
+    function finalUpgradeOwned(id) {
+      const finalId = finalUpgradeByWorld[id];
+      if (id === worldId) return upgrades.find(upgrade => upgrade.id === finalId)?.owned || 0n;
+      return BigInt(savedWorlds[id]?.upgradeOwned?.[finalId] || "0");
+    }
+
+    function canRebirth() {
+      return unlockedWorldIds().every(id => finalUpgradeOwned(id) >= 15n)
+        && !blackjackRound?.active
+        && !rouletteSpinning;
+    }
+
+    function updateRebirthUI() {
+      const worldNames = {
+        epstein: "EPSTEIN",
+        trump: "TRUMP",
+        hawking: "HAWKING",
+        bill: "CLINTON",
+        maxwell: "MAXWELL"
+      };
+      const requirements = unlockedWorldIds()
+        .map(id => `${worldNames[id]} FINAL UPGRADE: ${commaBigInt(finalUpgradeOwned(id))} / 15`)
+        .join("<br>");
+      const busy = blackjackRound?.active || rouletteSpinning;
+      rebirthRequirementsEl.innerHTML = `${requirements}${busy ? "<br>FINISH YOUR ARCADE GAME BEFORE REBIRTH." : ""}`;
+      rebirthBtn.disabled = !canRebirth();
+      rebirthCountEl.textContent = commaBigInt(rebirths);
+      rebirthMultiplierEl.textContent = `${commaBigInt(rebirthMultiplier())}x`;
     }
 
     function applyOfflineProgress(previousSaveTime) {
@@ -1508,19 +1618,20 @@
       rouletteWheelEl.querySelectorAll(".roulettePocket").forEach(pocket => {
         pocket.setAttribute("aria-pressed", String(rouletteBetType.value === "number" && pocket.textContent === rouletteTarget.value));
       });
-      childChanceEl.textContent = formatPercentBps(50n + globalEffect("childChanceBps"));
+      childChanceEl.textContent = formatPercentBps(childChanceBps());
     }
 
     // Top UI
     function updateTopUI() {
-      const worldNames = { epstein: "EPSTEIN", trump: "TRUMP", hawking: "STEPHEN HAWKING", bill: "BILL CLINTON" };
-      const worldTitles = { epstein: "EPSTEIN CLICKER", trump: "TRUMP CLICKER", hawking: "HAWKING CLICKER", bill: "CLINTON CLICKER" };
+      const worldNames = { epstein: "EPSTEIN", trump: "TRUMP", hawking: "STEPHEN HAWKING", bill: "BILL CLINTON", maxwell: "GHISLAINE MAXWELL" };
+      const worldTitles = { epstein: "EPSTEIN CLICKER", trump: "TRUMP CLICKER", hawking: "HAWKING CLICKER", bill: "CLINTON CLICKER", maxwell: "MAXWELL CLICKER" };
       const worldList = unlockedWorldIds();
       const currentIndex = worldList.indexOf(worldId);
       const nextWorld = worldList[(currentIndex + 1) % worldList.length];
       document.body.classList.toggle("trumpWorld", worldId === "trump");
       document.body.classList.toggle("hawkingWorld", worldId === "hawking");
       document.body.classList.toggle("billClintonWorld", worldId === "bill");
+      document.body.classList.toggle("maxwellWorld", worldId === "maxwell");
       gameTitleEl.textContent = worldTitles[worldId];
       worldNameEl.textContent = worldNames[worldId];
       const finalOwned = epsteinUpgrades.find(u => u.id === "final").owned;
@@ -1532,6 +1643,8 @@
         worldProgressEl.textContent = `THE BIG LEAGUE: ${commaBigInt(bigLeagueOwned)} / 10`;
       } else if (worldId === "hawking" && !billClintonUnlocked) {
         worldProgressEl.textContent = `THE OBSERVABLE COSMOS: ${commaBigInt(cosmosOwned)} / 20`;
+      } else if (worldId === "bill" && !maxwellUnlocked) {
+        worldProgressEl.textContent = `CLINTON UPGRADES: ${commaBigInt(upgradesOwned)} / 15 | REBIRTHS: ${commaBigInt(rebirths)} / 1`;
       } else if (worldId === "bill" && billClintonUnlocked) {
         worldProgressEl.textContent = "WORLD UNLOCKED";
       } else {
@@ -1541,8 +1654,14 @@
       worldBtn.textContent = worldList.length < 2
         ? "TRUMP WORLD LOCKED"
         : `GO TO ${worldNames[nextWorld]} WORLD`;
-      btn.alt = worldId === "trump" ? "Click Trump" : worldId === "hawking" ? "Click Stephen Hawking" : worldId === "bill" ? "Click Bill Clinton" : "Click";
-      btn.src = worldId === "trump" ? trumpImage : worldId === "hawking" ? hawkingImage : worldId === "bill" ? billClintonImage : epsteinImage;
+      btn.alt = worldId === "trump" ? "Click Trump"
+        : worldId === "hawking" ? "Click Stephen Hawking"
+          : worldId === "bill" ? "Click Bill Clinton"
+            : worldId === "maxwell" ? "Click Ghislaine Maxwell" : "Click";
+      btn.src = worldId === "trump" ? trumpImage
+        : worldId === "hawking" ? hawkingImage
+          : worldId === "bill" ? billClintonImage
+            : worldId === "maxwell" ? maxwellImage : epsteinImage;
       scoreEl.textContent = fmtScore10(score10);
       perClickEl.textContent = commaBigInt(effectivePerClick());
 
@@ -1553,6 +1672,7 @@
       worldEarningsEl.textContent = otherWorlds.length
         ? `ALSO EARNING: ${otherWorlds.map(id => `${worldNames[id]} ${fmtPerSec10(worldAutoPerSec10(id))}/SEC`).join(" | ")}`
         : "Unlock more worlds to earn clicks in them while you play here.";
+      updateRebirthUI();
       refreshArcadeUI();
     }
 
@@ -1589,9 +1709,38 @@
       if (worldId === "hawking" && upgrades.find(x => x.id === "cosmos").owned >= 20n) {
         billClintonUnlocked = true;
       }
+      if (worldId === "bill" && upgradesOwned >= 15n && rebirths >= 1n) {
+        maxwellUnlocked = true;
+      }
 
       fullUpdate();
     }
+
+    rebirthBtn.addEventListener("click", () => {
+      if (!canRebirth()) return;
+      if (!window.confirm("Rebirth now? This resets all world clicks, all world upgrades, children, and the Universal Theory Tree. Your rebirth bonus and unlocked worlds will remain.")) return;
+
+      rebirths += 1n;
+      Object.entries(worldUpgradeSets).forEach(([id, worldUpgrades]) => {
+        worldUpgrades.forEach(upgrade => {
+          upgrade.cost = initialUpgradeCosts[id].get(upgrade.id);
+          upgrade.owned = 0n;
+        });
+      });
+      score10 = 0n;
+      perClick = 1n;
+      upgradesOwned = 0n;
+      children = 0n;
+      savedWorlds = {};
+      productionCarry = { epstein: 0n, trump: 0n, hawking: 0n, bill: 0n, maxwell: 0n };
+      universalUpgrades.forEach(upgrade => { upgrade.owned = false; });
+      sprintExpiresAt = 0;
+      sprintCooldownUntil = 0;
+      lastSavedAt = Date.now();
+      restoreWorld("epstein");
+      rendered = false;
+      fullUpdate();
+    });
 
     function buyUniversalUpgrade(id) {
       const upgrade = universalUpgrades.find(u => u.id === id);
@@ -1710,14 +1859,15 @@
         { id: "epstein", upgrades: epsteinUpgrades },
         { id: "trump", upgrades: trumpUpgrades },
         { id: "hawking", upgrades: hawkingUpgrades },
-        { id: "bill", upgrades: billClintonUpgrades }
+        { id: "bill", upgrades: billClintonUpgrades },
+        { id: "maxwell", upgrades: maxwellUpgrades }
       ];
+      const chanceBps = childChanceBps();
       const childrenFound = worlds.reduce((found, world) => {
         return found + world.upgrades.filter(u => {
           const owned = world.id === worldId
             ? u.owned
             : BigInt(savedWorlds[world.id]?.upgradeOwned?.[u.id] || "0");
-          const chanceBps = 50n + globalEffect("childChanceBps");
           return owned > 0n && Math.random() * 10000 < Number(chanceBps);
         }).length;
       }, 0);
