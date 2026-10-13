@@ -517,7 +517,7 @@
       CHILDREN: <span id="children">0</span><br>
       Each owned upgrade type rolls separately for children: <span id="childChance">0.50%</span> chance per click.
     </div>
-    <div class="sub">REBIRTHS: <span id="rebirthCount">0</span> | ALL PRODUCTION: <span id="rebirthMultiplier">1x</span></div>
+    <div class="sub">REBIRTHS: <span id="rebirthCount">0 / 1</span> | ALL PRODUCTION: <span id="rebirthMultiplier">1x</span></div>
     <button id="drawerToggle" type="button" class="drawerToggle">ARCADE</button>
     <aside id="sideDrawer" class="sideDrawer" aria-label="Upgrades and minigames drawer">
       <div class="drawerHeader">
@@ -644,7 +644,7 @@
     </div>
     <div class="panel">
       <h2>REBIRTH</h2>
-      <div class="sub">Requires 15 of every unlocked world's final upgrade. Resets clicks, world upgrades, children, and the Universal Theory Tree for a permanent 2x production bonus per rebirth.</div>
+      <div class="sub">One rebirth maximum. Requires 15 of every unlocked world's final upgrade. Resets clicks, world upgrades, children, and the Universal Theory Tree for a permanent 2x production bonus.</div>
       <div id="rebirthRequirements" class="sub"></div>
       <button id="rebirthBtn" type="button" disabled>REBIRTH</button>
     </div>
@@ -1020,7 +1020,7 @@
         worldUnlocked = data.worldUnlocked === true || finalOwned >= 10n;
         hawkingUnlocked = data.hawkingUnlocked === true || bigLeagueOwned >= 10n;
         billClintonUnlocked = data.billClintonUnlocked === true || cosmosOwned >= 20n;
-        rebirths = BigInt(data.rebirths || "0");
+        rebirths = BigInt(data.rebirths || "0") > 0n ? 1n : 0n;
         maxwellUnlocked = data.maxwellUnlocked === true
           || (rebirths >= 1n && BigInt(savedWorlds.bill?.upgradesOwned || "0") >= 15n);
         children = BigInt(data.children || "0");
@@ -1183,6 +1183,7 @@
     }
 
     function worldAutoPerSec10(id, includeSprint = true) {
+      if (!unlockedWorldIds().includes(id)) return 0n;
       return worldClickPower(id, includeSprint) * passiveMultiplierBps() / 10000n;
     }
 
@@ -1206,7 +1207,8 @@
     }
 
     function canRebirth() {
-      return unlockedWorldIds().every(id => finalUpgradeOwned(id) >= 15n)
+      return rebirths < 1n
+        && unlockedWorldIds().every(id => finalUpgradeOwned(id) >= 15n)
         && !blackjackRound?.active
         && !rouletteSpinning;
     }
@@ -1225,7 +1227,7 @@
       const busy = blackjackRound?.active || rouletteSpinning;
       rebirthRequirementsEl.innerHTML = `${requirements}${busy ? "<br>FINISH YOUR ARCADE GAME BEFORE REBIRTH." : ""}`;
       rebirthBtn.disabled = !canRebirth();
-      rebirthCountEl.textContent = commaBigInt(rebirths);
+      rebirthCountEl.textContent = `${commaBigInt(rebirths)} / 1`;
       rebirthMultiplierEl.textContent = `${commaBigInt(rebirthMultiplier())}x`;
     }
 
@@ -1718,7 +1720,7 @@
 
     rebirthBtn.addEventListener("click", () => {
       if (!canRebirth()) return;
-      if (!window.confirm("Rebirth now? This resets all world clicks, all world upgrades, children, the Universal Theory Tree, and world unlocks. Your rebirth bonus will remain.")) return;
+      if (rebirths >= 1n || !window.confirm("Rebirth now? This is your one rebirth. It resets all world clicks, all world upgrades, children, the Universal Theory Tree, and world unlocks, and permanently doubles production.")) return;
 
       rebirths += 1n;
       Object.entries(worldUpgradeSets).forEach(([id, worldUpgrades]) => {
